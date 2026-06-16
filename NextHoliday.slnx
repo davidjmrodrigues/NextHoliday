@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="NextHoliday.API/NextHoliday.API.csproj" />
+  <Project Path="NextHoliday.Application/NextHoliday.Application.csproj" />
+  <Project Path="NextHoliday.Domain/NextHoliday.Domain.csproj" />
+  <Project Path="NextHoliday.Infrastructure/NextHoliday.Infrastructure.csproj" />
+</Solution>
