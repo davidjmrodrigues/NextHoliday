@@ -12,9 +12,13 @@ namespace NextHoliday.Application.Countries.Queries.GetAllCountries
 
         public async Task<List<CountryDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
         {
-            var countries = await _context.Countries.ToListAsync(cancellationToken);
+            var query = _context.Countries.AsQueryable();
 
-            return countries.Select(c => new CountryDto(c.Code, c.Name, c.Continent)).ToList();
+            if (request.Continent.HasValue)
+                query = query.Where(c => c.Continent == request.Continent.Value);
+
+            return await query.Select(c => new CountryDto(c.Code, c.Name, c.Continent))
+                .ToListAsync(cancellationToken);
         }
     }
 }
