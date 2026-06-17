@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace NextHoliday.Application.Destinations.Queries.GetBestDestination;
+namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestination;
 
 public class GetBestDestinationValidator : AbstractValidator<GetBestDestinationQuery>
 {

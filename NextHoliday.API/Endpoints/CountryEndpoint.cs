@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NextHoliday.Application.Countries.Queries.GetAllCountries;
+using NextHoliday.Application.Entities.Countries.Queries.GetAllCountries;
 using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.API.Endpoints

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextHoliday.Infrastructure.Persistence;
 
-namespace NextHoliday.Application.Countries.Queries.GetAllCountries
+namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
 {
     public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, List<CountryDto>?>
     {
