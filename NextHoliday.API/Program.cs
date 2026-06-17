@@ -27,7 +27,7 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
-        document.Info.Version = "v0.1.0";
+        document.Info.Version = "v0.1.1";
         document.Info.Title = "NextHoliday API";
         document.Info.Description = "Holiday recomendation API.";
         return Task.CompletedTask;
@@ -50,7 +50,7 @@ app.UseHttpsRedirection();
 
 
 // ENDPOINTS
-var versionedGroup = app.MapGroup("api/v1");    
+var versionedGroup = app.MapGroup("api/v0");    
 
 var endpointTypes = typeof(Program).Assembly.GetTypes()
     .Where(t => typeof(IEndpoint).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
