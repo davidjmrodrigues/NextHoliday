@@ -4,7 +4,8 @@ using NextHoliday.Application.Common.Parameters;
 namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
 {
     public record GetAllCountriesQuery(
-        String? Continent = null
+        String? Continent = null,
+        bool? RequiresVisa = null
         ) : PagedRequest, IRequest<IEnumerable<CountryDto>>;
 
     public record CountryDto(

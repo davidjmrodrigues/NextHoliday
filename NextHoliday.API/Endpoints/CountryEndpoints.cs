@@ -14,10 +14,11 @@ namespace NextHoliday.API.Endpoints
 
             group.MapGet("", async (
                 string? continent,
+                bool? requiresVisa,
                 [AsParameters] PaginationParams paged, 
                 IMediator mediator = null!) =>
             {
-                var query = new GetAllCountriesQuery(continent)
+                var query = new GetAllCountriesQuery(continent, requiresVisa)
                 {
                     Search = paged.Search,
                     Page = paged.Page,

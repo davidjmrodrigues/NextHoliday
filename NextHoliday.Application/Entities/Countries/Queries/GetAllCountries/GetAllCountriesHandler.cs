@@ -26,6 +26,9 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
                 query = query.Where(c => c.Continent.ToString() == continentLower);
             }
 
+            if (request.RequiresVisa.HasValue)
+                query = query.Where(c => c.RequiresVisa == request.RequiresVisa.Value);
+
             var countries = await query
             .OrderBy(c => c.Name)
             .Skip((request.Page - 1) * request.PageSize)
@@ -35,7 +38,7 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
                 c.Name,
                 c.Continent.ToString(),
                 c.Currency,
-                c.Currency,
+                c.Language,
                 c.Capital,
                 c.RequiresVisa
             ))
