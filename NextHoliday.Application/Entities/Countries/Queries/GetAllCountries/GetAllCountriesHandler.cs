@@ -33,7 +33,11 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
             .Select(c => new CountryDto(
                 c.Code,
                 c.Name,
-                c.Continent.ToString()
+                c.Continent.ToString(),
+                c.Currency,
+                c.Currency,
+                c.Capital,
+                c.RequiresVisa
             ))
             .ToListAsync(cancellationToken);
 

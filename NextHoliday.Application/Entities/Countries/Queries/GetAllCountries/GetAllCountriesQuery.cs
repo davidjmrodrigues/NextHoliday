@@ -10,6 +10,10 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
     public record CountryDto(
         string Code,
         string Name,
-        string Continent
+        string Continent,
+        string Currency,
+        string Language,
+        string Capital,
+        bool RequiresVisa
     );
 }

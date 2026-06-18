@@ -18,8 +18,16 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode
             if (!request.Code.Equals(""))
                 query = query.Where(c => c.Code == request.Code);
 
-            var country = await query.Select(c => new CountryDto(c.Code, c.Name, c.Continent.ToString()))
-                .FirstOrDefaultAsync(cancellationToken);
+            var country = await query.Select(c => new CountryDto(
+                c.Code,
+                c.Name,
+                c.Continent.ToString(),
+                c.Currency,
+                c.Currency,
+                c.Capital,
+                c.RequiresVisa
+            ))
+            .FirstOrDefaultAsync(cancellationToken);
 
             return country ?? throw new NotFoundException($"Country with code {request.Code} not found.");
         }
