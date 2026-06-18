@@ -25,7 +25,11 @@ namespace NextHoliday.Infrastructure.Persistence
                 entity.HasKey(c => c.Code);
                 entity.Property(c => c.Code).HasMaxLength(2).IsFixedLength();
                 entity.Property(c => c.Name).HasMaxLength(100).IsRequired();
+                entity.Property(c => c.Currency).HasMaxLength(3).IsRequired();
+                entity.Property(c => c.Language).HasMaxLength(50).IsRequired();
+                entity.Property(c => c.Capital).HasMaxLength(100).IsRequired();
                 entity.Property(c => c.Continent).HasConversion<int>();
+                entity.Property(c => c.RequiresVisa).IsRequired();
             });
 
             modelBuilder.Entity<Destination>(entity =>
