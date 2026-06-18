@@ -4,21 +4,40 @@ using NextHoliday.Infrastructure.Persistence;
 
 namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
 {
-    public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, List<CountryDto>?>
+    public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryDto>?>
     {
         private readonly ApplicationDbContext _context;
 
         public GetAllCountriesHandler(ApplicationDbContext context) => _context = context;
 
-        public async Task<List<CountryDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CountryDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
         {
-            var query = _context.Countries.AsQueryable();
+            var query = _context.Countries.AsNoTracking();
 
-            if (request.Continent.HasValue)
-                query = query.Where(c => c.Continent == request.Continent.Value);
+            if (!string.IsNullOrWhiteSpace(request.Search))
+            {
+                var searchLower = request.Search.ToLower();
+                query = query.Where(c => c.Name.ToLower().Contains(searchLower) || c.Code.ToLower().Contains(searchLower));
+            }
 
-            return await query.Select(c => new CountryDto(c.Code, c.Name, c.Continent))
-                .ToListAsync(cancellationToken);
+            if (!string.IsNullOrWhiteSpace(request.Continent))
+            {
+                var continentLower = request.Continent.ToLower();
+                query = query.Where(c => c.Continent.ToString() == continentLower);
+            }
+
+            var countries = await query
+            .OrderBy(c => c.Name)
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .Select(c => new CountryDto(
+                c.Code,
+                c.Name,
+                c.Continent.ToString()
+            ))
+            .ToListAsync(cancellationToken);
+
+            return countries;
         }
     }
 }
