@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NextHoliday.API.Common.Models;
 using NextHoliday.Application.Entities.Countries.Queries.GetAllCountries;
 using NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode;
 
@@ -11,9 +12,17 @@ namespace NextHoliday.API.Endpoints
         {
             var group = app.MapGroup("countries").WithTags("Countries");
 
-            group.MapGet("/", async (string? search, string? continent, int page=1, int pageSize=50, IMediator mediator = null!) =>
+            group.MapGet("", async (
+                string? continent,
+                [AsParameters] PaginationParams paged, 
+                IMediator mediator = null!) =>
             {
-                var query = new GetAllCountriesQuery(search, continent, page, pageSize);
+                var query = new GetAllCountriesQuery(continent)
+                {
+                    Search = paged.Search,
+                    Page = paged.Page,
+                    PageSize = paged.PageSize
+                };
                 var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
