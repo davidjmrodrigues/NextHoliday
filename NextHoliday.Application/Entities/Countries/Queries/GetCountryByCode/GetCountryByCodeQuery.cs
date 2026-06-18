@@ -7,6 +7,6 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode
     public record CountryDto(
         string Code,
         string Name,
-        Continent Continent
+        string Continent
     );
 }
