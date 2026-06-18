@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NextHoliday.Application.Entities.Countries.Queries.GetAllCountries;
 using NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode;
-using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.API.Endpoints
 {
