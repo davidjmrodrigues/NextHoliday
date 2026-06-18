@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
 {

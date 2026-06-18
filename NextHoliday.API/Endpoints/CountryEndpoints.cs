@@ -12,9 +12,9 @@ namespace NextHoliday.API.Endpoints
         {
             var group = app.MapGroup("countries").WithTags("Countries");
 
-            group.MapGet("/", async (Continent? continent, IMediator mediator) =>
+            group.MapGet("/", async (string? search, string? continent, int page=1, int pageSize=50, IMediator mediator = null!) =>
             {
-                var query = new GetAllCountriesQuery(continent);
+                var query = new GetAllCountriesQuery(search, continent, page, pageSize);
                 var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
