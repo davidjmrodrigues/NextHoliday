@@ -11,6 +11,7 @@ namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestinati
         string CountryCode,
         string CountryName,
         string Description,
+        bool IsActive,
         double AverageTemperature,
         double RainProbability,
         string WeatherCondition,
