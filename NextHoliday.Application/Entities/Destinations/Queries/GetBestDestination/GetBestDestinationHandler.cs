@@ -37,6 +37,7 @@ namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestinati
                 bestDestination.Id,
                 bestDestination.City,
                 bestDestination.Country.Name,
+                bestDestination.Description,
                 climate?.AverageTemperature ?? 0,
                 climate?.RainProbability ?? 0,
                 climate?.WeatherCondition ?? "Unknown",

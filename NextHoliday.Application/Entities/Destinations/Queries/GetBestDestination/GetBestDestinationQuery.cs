@@ -9,6 +9,7 @@ namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestinati
         Guid Id,
         string City,
         string CountryName,
+        string Description,
         double AverageTemperature,
         double RainProbability,
         string WeatherCondition,
