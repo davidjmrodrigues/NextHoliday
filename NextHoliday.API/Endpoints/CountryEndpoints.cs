@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NextHoliday.API.Common.Models;
-using NextHoliday.Application.Entities.Countries.Queries.GetAllCountries;
-using NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode;
+using NextHoliday.Application.Features.Countries.Queries.GetAllCountries;
+using NextHoliday.Application.Features.Countries.Queries.GetCountryByCode;
 
 namespace NextHoliday.API.Endpoints
 {
@@ -28,7 +28,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.Ok(result);
             })
             .WithName("GetAllCountries")
-            .Produces<List<Application.Entities.Countries.Queries.GetAllCountries.CountryDto>>(StatusCodes.Status200OK)
+            .Produces<List<CountryGridDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
 
             group.MapGet("/{code}", async (string code, IMediator mediator) =>
@@ -38,7 +38,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.Ok(result);
             })
             .WithName("GetCountryByCode")
-            .Produces<List<Application.Entities.Countries.Queries.GetCountryByCode.CountryDto>>(StatusCodes.Status200OK)
+            .Produces<List<CountryByCodeDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }

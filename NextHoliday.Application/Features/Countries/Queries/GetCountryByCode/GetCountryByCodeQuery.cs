@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using NextHoliday.Domain.Enums;
 
-namespace NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode
+namespace NextHoliday.Application.Features.Countries.Queries.GetCountryByCode
 {
-    public record GetCountryByCodeQuery(string Code) : IRequest<CountryDto>;
-    public record CountryDto(
+    public record GetCountryByCodeQuery(string Code) : IRequest<CountryByCodeDto>;
+    public record CountryByCodeDto(
         string Code,
         string Name,
         string Continent,
