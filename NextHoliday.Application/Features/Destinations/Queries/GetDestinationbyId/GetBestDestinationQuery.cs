@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using NextHoliday.Domain.Enums;
 
-namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestination
+namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId
 {
-    public record GetBestDestinationQuery(Continent? Continent, int? Month) : IRequest<DestinationDto>;
+    public record GetDestinationByIdQuery(Guid Id) : IRequest<DestinationDto>;
 
     public record DestinationDto(
         Guid Id,

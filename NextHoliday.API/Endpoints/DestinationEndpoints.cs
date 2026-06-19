@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NextHoliday.Application.Entities.Destinations.Queries.GetBestDestination;
 using NextHoliday.Application.Features.Destinations.Commands.CreateDestination;
+using NextHoliday.Application.Features.Destinations.Queries.GetBestDestination;
 using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.API.Endpoints
