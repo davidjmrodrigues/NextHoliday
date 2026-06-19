@@ -5,18 +5,18 @@ using NextHoliday.Infrastructure.Persistence;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId
 {
-    public class GetDestinationByIdHandler : IRequestHandler<GetDestinationByIdQuery, DestinationDto?>
+    public class GetDestinationByIdHandler : IRequestHandler<GetDestinationByIdQuery, DestinationByIdDto?>
     {
         private readonly ApplicationDbContext _context;
 
         public GetDestinationByIdHandler(ApplicationDbContext context) => _context = context;
 
-        public async Task<DestinationDto?> Handle(GetDestinationByIdQuery request, CancellationToken cancellationToken)
+        public async Task<DestinationByIdDto?> Handle(GetDestinationByIdQuery request, CancellationToken cancellationToken)
         {
             var destinations = await _context.Destinations
                 .AsNoTracking()
                 .Where(d => d.Id == request.Id)
-                .Select(d => new DestinationDto(
+                .Select(d => new DestinationByIdDto(
                     d.Id,
                     d.City,
                     d.Country.Code,

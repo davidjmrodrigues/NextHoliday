@@ -20,7 +20,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.Ok(result);
             })
             .WithName("DestinationById")
-            .Produces<Application.Features.Destinations.Queries.GetDestinationbyId.DestinationDto>(StatusCodes.Status200OK)
+            .Produces<DestinationByIdDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
 
@@ -32,7 +32,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.Ok(result);
             })
             .WithName("GetBestDestination")
-            .Produces<Application.Features.Destinations.Queries.GetBestDestination.DestinationDto>(StatusCodes.Status200OK)
+            .Produces<BestDestinationDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
 
@@ -41,7 +41,10 @@ namespace NextHoliday.API.Endpoints
             {
                 var result = await mediator.Send(command);
                 return Results.CreatedAtRoute("GetDestinationById", new { id = result.Id }, result);
-            });
+            })
+            .Produces<DestinationByIdDto>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }
     }
 }

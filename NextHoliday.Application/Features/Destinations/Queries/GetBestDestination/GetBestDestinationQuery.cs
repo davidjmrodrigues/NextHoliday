@@ -3,9 +3,9 @@ using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestination
 {
-    public record GetBestDestinationQuery(Continent? Continent, int? Month) : IRequest<DestinationDto>;
+    public record GetBestDestinationQuery(Continent? Continent, int? Month) : IRequest<BestDestinationDto>;
 
-    public record DestinationDto(
+    public record BestDestinationDto(
         Guid Id,
         string City,
         string CountryCode,

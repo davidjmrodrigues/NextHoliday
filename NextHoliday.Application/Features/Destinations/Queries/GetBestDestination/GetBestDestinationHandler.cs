@@ -5,13 +5,13 @@ using NextHoliday.Infrastructure.Persistence;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestination
 {
-    public class GetBestDestinationHandler : IRequestHandler<GetBestDestinationQuery, DestinationDto?>
+    public class GetBestDestinationHandler : IRequestHandler<GetBestDestinationQuery, BestDestinationDto?>
     {
         private readonly ApplicationDbContext _context;
 
         public GetBestDestinationHandler(ApplicationDbContext context) => _context = context;
 
-        public async Task<DestinationDto?> Handle(GetBestDestinationQuery request, CancellationToken cancellationToken)
+        public async Task<BestDestinationDto?> Handle(GetBestDestinationQuery request, CancellationToken cancellationToken)
         {
             var destinations = await _context.Destinations
                 .Include(d => d.Country)
@@ -24,16 +24,15 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestinati
 
             var bestDestination = destinations
                 .OrderBy(d => d.ClimateHistories.FirstOrDefault()?.RainProbability ?? 100)
-                .FirstOrDefault();
+                .FirstOrDefault() ?? throw new NotFoundException("No destination found.");
 
-            if (bestDestination == null) throw new NotFoundException("No destination found.");
 
             var climate = bestDestination.ClimateHistories.FirstOrDefault();
             var price = bestDestination.PriceHistories.FirstOrDefault();
 
             decimal totalCost = (price?.EstimatedFlightPrice ?? 0) + ((price?.EstimatedHotelPricePerNight ?? 0) * 7);
 
-            return new DestinationDto(
+            return new BestDestinationDto(
                 bestDestination.Id,
                 bestDestination.City,
                 bestDestination.Country.Code,

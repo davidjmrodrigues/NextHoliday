@@ -3,9 +3,9 @@ using NextHoliday.Domain.Entities.History;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId
 {
-    public record GetDestinationByIdQuery(Guid Id) : IRequest<DestinationDto>;
+    public record GetDestinationByIdQuery(Guid Id) : IRequest<DestinationByIdDto>;
 
-    public record DestinationDto(
+    public record DestinationByIdDto(
         Guid Id,
         string City,
         string CountryCode,
