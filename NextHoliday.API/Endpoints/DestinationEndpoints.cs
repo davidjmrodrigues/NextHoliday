@@ -11,7 +11,7 @@ namespace NextHoliday.API.Endpoints
         {
             var group = app.MapGroup("destinations").WithTags("Destinations");
 
-            group.MapGet("best", async (Continent continent, int month, IMediator mediator) =>
+            group.MapGet("best", async (Continent? continent, int? month, IMediator mediator) =>
             {
                 var query = new GetBestDestinationQuery(continent, month);
                 var result = await mediator.Send(query);
