@@ -12,47 +12,53 @@ public class ValidationExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-        if (exception is NotFoundException notFoundEx)
+        var problemDetails = new ProblemDetails
         {
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status404NotFound,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = "Not Found.",
-                Detail = notFoundEx.Message
-            };
+            Instance = httpContext.Request.Path
+        };
 
-            httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        switch (exception)
+        {
+            case ValidationException validationException:
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Validation error occurred.";
+                problemDetails.Detail = "Further details in the 'errors' field.";
 
-            return true;
+                var errors = validationException.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        failureGroup => failureGroup.Key,
+                        failureGroup => failureGroup.Select(f => f.ErrorMessage).ToArray()
+                    );
+
+                problemDetails.Extensions.Add("errors", errors);
+                break;
+
+            case KeyNotFoundException keyNotFoundException:
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Key not found.";
+                problemDetails.Detail = keyNotFoundException.Message;
+                break;
+            
+            case NotFoundException notFoundException:
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Not found.";
+                problemDetails.Detail = notFoundException.Message;
+                break;
+
+            default:
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                problemDetails.Status = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Internal server error.";
+                problemDetails.Detail = "An unexpected server error occurred. Please try again later.";
+                break;
         }
 
-        if (exception is ValidationException validationException)
-        {
-            var errors = validationException.Errors
-                .GroupBy(e => e.PropertyName)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(e => e.ErrorMessage).ToArray()
-                );
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Validation error ocurred.",
-                Detail = "Further details in the 'errors' field."
-            };
-
-            problemDetails.Extensions.Add("errors", errors);
-
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }
