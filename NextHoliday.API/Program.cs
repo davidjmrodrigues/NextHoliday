@@ -40,6 +40,25 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                await context.Database.MigrateAsync();
+                Console.WriteLine("[DEV] Database updated automaticallys!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[DEV] Error while applying migrations: {ex.Message}");
+        }
+    }
+
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
