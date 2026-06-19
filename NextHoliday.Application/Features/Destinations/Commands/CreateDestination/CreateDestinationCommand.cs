@@ -10,4 +10,10 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
     ) : IRequest<CreatedDestinationResponse>;
 }
 
-public record CreatedDestinationResponse(Guid Id, string City);
+public record CreatedDestinationResponse(
+    Guid Id, 
+    string City, 
+    string Description, 
+    string CountryCode, 
+    bool IsActive
+);

@@ -22,14 +22,20 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
                 Id = Guid.NewGuid(),
                 City = request.City,
                 Description = request.Description,
-                CountryCode = request.CountryCode,
+                CountryCode = request.CountryCode.ToUpper(),
                 IsActive = true
             };
 
             await _context.Destinations.AddAsync(destination, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new CreatedDestinationResponse(destination.Id, destination.City);
+            return new CreatedDestinationResponse(
+                destination.Id, 
+                destination.City,
+                destination.Description,
+                destination.CountryCode,
+                destination.IsActive
+            );
         }
     }
 }
