@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextHoliday.Application.Common.Exceptions;
 using NextHoliday.Infrastructure.Persistence;
 
-namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestination
+namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestination
 {
     public class GetBestDestinationHandler : IRequestHandler<GetBestDestinationQuery, DestinationDto?>
     {
