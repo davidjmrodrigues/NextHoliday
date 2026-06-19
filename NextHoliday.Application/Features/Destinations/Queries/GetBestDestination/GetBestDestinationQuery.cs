@@ -8,6 +8,7 @@ namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestinati
     public record DestinationDto(
         Guid Id,
         string City,
+        string CountryCode,
         string CountryName,
         string Description,
         double AverageTemperature,

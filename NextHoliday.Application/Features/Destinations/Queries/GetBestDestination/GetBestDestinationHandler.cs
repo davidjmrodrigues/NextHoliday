@@ -36,6 +36,7 @@ namespace NextHoliday.Application.Entities.Destinations.Queries.GetBestDestinati
             return new DestinationDto(
                 bestDestination.Id,
                 bestDestination.City,
+                bestDestination.Country.Code,
                 bestDestination.Country.Name,
                 bestDestination.Description,
                 climate?.AverageTemperature ?? 0,
