@@ -1,7 +1,8 @@
-﻿using NextHoliday.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NextHoliday.Application.Entities.Destinations.Queries.GetBestDestination;
+using NextHoliday.Application.Features.Destinations.Commands.CreateDestination;
+using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.API.Endpoints
 {
@@ -11,6 +12,7 @@ namespace NextHoliday.API.Endpoints
         {
             var group = app.MapGroup("destinations").WithTags("Destinations");
 
+            // GET BEST
             group.MapGet("best", async (Continent? continent, int? month, IMediator mediator) =>
             {
                 var query = new GetBestDestinationQuery(continent, month);
@@ -21,6 +23,13 @@ namespace NextHoliday.API.Endpoints
             .Produces<DestinationDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+            // POST
+            group.MapPost("", async (CreateDestinationCommand command, IMediator mediator) =>
+            {
+                var result = await mediator.Send(command);
+                return Results.CreatedAtRoute("GetDestinationById", new { id = result.Id }, result);
+            });
         }
     }
 }
