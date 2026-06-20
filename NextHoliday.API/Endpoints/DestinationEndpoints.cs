@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NextHoliday.API.Common.Models;
 using NextHoliday.Application.Features.Destinations.Commands.CreateDestination;
+using NextHoliday.Application.Features.Destinations.Commands.DeleteDestination;
 using NextHoliday.Application.Features.Destinations.Commands.UpdateDestination;
 using NextHoliday.Application.Features.Destinations.Queries.GetAllDestinations;
 using NextHoliday.Application.Features.Destinations.Queries.GetBestDestination;
@@ -82,6 +83,16 @@ namespace NextHoliday.API.Endpoints
             .WithName("UpdateDestination")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+            // DELETE
+            group.MapDelete("{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                await mediator.Send(new DeleteDestinationCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteDestination")
+            .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }
     }
