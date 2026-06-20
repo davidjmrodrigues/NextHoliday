@@ -36,6 +36,7 @@ namespace NextHoliday.Infrastructure.Persistence
             {
                 entity.HasKey(d => d.Id);
                 entity.Property(d => d.City).HasMaxLength(50).IsRequired();
+                entity.Property(d => d.Description).HasMaxLength(500);
 
                 // One country to many destinations
                 entity.HasOne(d => d.Country)

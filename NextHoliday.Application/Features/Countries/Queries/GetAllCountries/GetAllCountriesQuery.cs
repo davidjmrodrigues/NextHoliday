@@ -1,14 +1,14 @@
 ﻿using MediatR;
 using NextHoliday.Application.Common.Parameters;
 
-namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
+namespace NextHoliday.Application.Features.Countries.Queries.GetAllCountries
 {
     public record GetAllCountriesQuery(
         String? Continent = null,
         bool? RequiresVisa = null
-        ) : PagedRequest, IRequest<IEnumerable<CountryDto>>;
+        ) : PagedRequest, IRequest<IEnumerable<CountryGridDto>>;
 
-    public record CountryDto(
+    public record CountryGridDto(
         string Code,
         string Name,
         string Continent,

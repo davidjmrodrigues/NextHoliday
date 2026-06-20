@@ -1,7 +1,13 @@
-﻿using NextHoliday.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NextHoliday.Application.Entities.Destinations.Queries.GetBestDestination;
+using NextHoliday.API.Common.Models;
+using NextHoliday.Application.Features.Destinations.Commands.CreateDestination;
+using NextHoliday.Application.Features.Destinations.Commands.DeleteDestination;
+using NextHoliday.Application.Features.Destinations.Commands.UpdateDestination;
+using NextHoliday.Application.Features.Destinations.Queries.GetAllDestinations;
+using NextHoliday.Application.Features.Destinations.Queries.GetBestDestination;
+using NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId;
+using NextHoliday.Domain.Enums;
 
 namespace NextHoliday.API.Endpoints
 {
@@ -11,15 +17,82 @@ namespace NextHoliday.API.Endpoints
         {
             var group = app.MapGroup("destinations").WithTags("Destinations");
 
-            group.MapGet("best", async (Continent continent, int month, IMediator mediator) =>
+            // GET ALL
+            group.MapGet("", async (
+                String? countryCode,
+                bool? isActive,
+                [AsParameters] PaginationParams paged,
+                IMediator mediator) =>
+            {
+                var query = new GetAllDestinationsQuery(countryCode, isActive)
+                {
+                    Search = paged.Search,
+                    Page = paged.Page,
+                    PageSize = paged.PageSize
+                };
+                var result = await mediator.Send(query);
+                return Results.Ok(result);
+            })
+            .WithName("GetAllDestinations")
+            .Produces<List<DestinationGridDto>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            
+            // GET BY ID
+            group.MapGet("{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                var query = new GetDestinationByIdQuery(id);
+                var result = await mediator.Send(query);
+                return Results.Ok(result);
+            })
+            .WithName("GetDestinationById")
+            .Produces<DestinationByIdDto>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+            // GET BEST
+            group.MapGet("best", async (Continent? continent, int? month, IMediator mediator) =>
             {
                 var query = new GetBestDestinationQuery(continent, month);
                 var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
             .WithName("GetBestDestination")
-            .Produces<DestinationDto>(StatusCodes.Status200OK)
+            .Produces<BestDestinationDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+            // POST
+            group.MapPost("", async (CreateDestinationCommand command, IMediator mediator) =>
+            {
+                var result = await mediator.Send(command);
+                return Results.CreatedAtRoute("GetDestinationById", new { id = result.Id }, result);
+            })
+            .WithName("CreateDestination")
+            .Produces<CreatedDestinationResponse>(StatusCodes.Status201Created)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            
+            // PUT
+            group.MapPut("{id:guid}", async (Guid id, UpdateDestinationCommand command, IMediator mediator) =>
+            {
+                command.Id = id;
+                await mediator.Send(command);
+                return Results.NoContent();
+            })
+            .WithName("UpdateDestination")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+
+            // DELETE
+            group.MapDelete("{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                await mediator.Send(new DeleteDestinationCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteDestination")
+            .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }
     }

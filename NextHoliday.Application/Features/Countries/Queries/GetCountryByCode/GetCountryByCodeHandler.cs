@@ -3,22 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using NextHoliday.Application.Common.Exceptions;
 using NextHoliday.Infrastructure.Persistence;
 
-namespace NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode
+namespace NextHoliday.Application.Features.Countries.Queries.GetCountryByCode
 {
-    public class GetCountryByCodeHandler : IRequestHandler<GetCountryByCodeQuery, CountryDto?>
+    public class GetCountryByCodeHandler : IRequestHandler<GetCountryByCodeQuery, CountryByCodeDto?>
     {
         private readonly ApplicationDbContext _context;
 
         public GetCountryByCodeHandler(ApplicationDbContext context) => _context = context;
 
-        public async Task<CountryDto?> Handle(GetCountryByCodeQuery request, CancellationToken cancellationToken)
+        public async Task<CountryByCodeDto?> Handle(GetCountryByCodeQuery request, CancellationToken cancellationToken)
         {
             var query = _context.Countries.AsQueryable();
 
             if (!request.Code.Equals(""))
                 query = query.Where(c => c.Code == request.Code);
 
-            var country = await query.Select(c => new CountryDto(
+            var country = await query.Select(c => new CountryByCodeDto(
                 c.Code,
                 c.Name,
                 c.Continent.ToString(),

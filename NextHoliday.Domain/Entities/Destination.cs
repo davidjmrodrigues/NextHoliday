@@ -6,6 +6,7 @@ namespace NextHoliday.Domain.Entities
     {
         public Guid Id { get; set; }
         public string City { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
 
         // Foreign Keys

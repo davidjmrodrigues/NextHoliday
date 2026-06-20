@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using NextHoliday.Infrastructure.Persistence;
 
-namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
+namespace NextHoliday.Application.Features.Countries.Queries.GetAllCountries
 {
-    public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryDto>?>
+    public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryGridDto>?>
     {
         private readonly ApplicationDbContext _context;
 
         public GetAllCountriesHandler(ApplicationDbContext context) => _context = context;
 
-        public async Task<IEnumerable<CountryDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CountryGridDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
         {
             var query = _context.Countries.AsNoTracking();
 
@@ -33,7 +33,7 @@ namespace NextHoliday.Application.Entities.Countries.Queries.GetAllCountries
             .OrderBy(c => c.Name)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(c => new CountryDto(
+            .Select(c => new CountryGridDto(
                 c.Code,
                 c.Name,
                 c.Continent.ToString(),

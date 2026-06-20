@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace NextHoliday.Application.Entities.Countries.Queries.GetCountryByCode
+namespace NextHoliday.Application.Features.Countries.Queries.GetCountryByCode
 {
     public class GetCountryByCodeValidator : AbstractValidator<GetCountryByCodeQuery>
     {
