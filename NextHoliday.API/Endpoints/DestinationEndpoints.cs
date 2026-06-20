@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NextHoliday.API.Common.Models;
 using NextHoliday.Application.Features.Destinations.Commands.CreateDestination;
+using NextHoliday.Application.Features.Destinations.Commands.UpdateDestination;
 using NextHoliday.Application.Features.Destinations.Queries.GetAllDestinations;
 using NextHoliday.Application.Features.Destinations.Queries.GetBestDestination;
 using NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId;
@@ -68,6 +69,18 @@ namespace NextHoliday.API.Endpoints
             })
             .WithName("CreateDestination")
             .Produces<CreatedDestinationResponse>(StatusCodes.Status201Created)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            
+            // PUT
+            group.MapPut("{id:guid}", async (Guid id, UpdateDestinationCommand command, IMediator mediator) =>
+            {
+                command.Id = id;
+                await mediator.Send(command);
+                return Results.NoContent();
+            })
+            .WithName("UpdateDestination")
+            .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }
