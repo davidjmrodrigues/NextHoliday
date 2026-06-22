@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NextHoliday.API.Endpoints;
@@ -26,6 +27,7 @@ builder.Services.AddMediatR(cfg => {
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
+// AUTHENTICATION AND AUTHORIZATION
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -48,6 +50,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// OPEN API CONFIGURATION
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -58,6 +61,17 @@ builder.Services.AddOpenApi(options =>
         return Task.CompletedTask;
     });
 });
+
+// IDENTITY CONFIGURATION
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 9;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 // APP
