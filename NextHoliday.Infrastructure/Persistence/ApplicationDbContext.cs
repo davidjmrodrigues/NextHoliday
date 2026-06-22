@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using NextHoliday.Domain.Entities;
 using NextHoliday.Domain.Entities.History;
 using NextHoliday.Domain.Enums;
+using System.Reflection;
+using System.Text.Json;
 
 namespace NextHoliday.Infrastructure.Persistence
 {
@@ -72,22 +74,23 @@ namespace NextHoliday.Infrastructure.Persistence
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            SeedData(modelBuilder);
+            PopulateCountries(modelBuilder);
         }
-        private static void SeedData(ModelBuilder modelBuilder)
+
+        private void PopulateCountries(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Country>().HasData(
-                new Country { Code = "PT", Name = "Portugal", Continent = Continent.Europe },
-                new Country { Code = "ES", Name = "Spain", Continent = Continent.Europe },
-                new Country { Code = "FR", Name = "France", Continent = Continent.Europe },
-                new Country { Code = "IT", Name = "Italy", Continent = Continent.Europe },
-                new Country { Code = "US", Name = "United States", Continent = Continent.NorthAmerica },
-                new Country { Code = "JP", Name = "Japan", Continent = Continent.Asia },
-                new Country { Code = "CN", Name = "China", Continent = Continent.Asia },
-                new Country { Code = "BR", Name = "Brazil", Continent = Continent.SouthAmerica },
-                new Country { Code = "EG", Name = "Egypt", Continent = Continent.Africa },
-                new Country { Code = "AU", Name = "Australia", Continent = Continent.Oceania }
-            );
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var filePath = Path.Combine(assemblyPath!, "Persistence", "countries.json");
+
+            if (File.Exists(filePath))
+            {
+                var jsonString = File.ReadAllText(filePath);
+                var countries = JsonSerializer.Deserialize<List<Country>>(jsonString);
+
+                if (countries != null)
+                    modelBuilder.Entity<Country>().HasData(countries);
+
+            } else Console.WriteLine("Failed to populate countries: countries.json file not found.");
         }
     }
 }
