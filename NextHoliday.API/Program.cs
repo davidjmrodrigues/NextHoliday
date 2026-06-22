@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using NextHoliday.API.Endpoints;
 using NextHoliday.API.Middleware;
 using NextHoliday.Application;
@@ -58,6 +59,29 @@ builder.Services.AddOpenApi(options =>
         document.Info.Version = "v0.1.1";
         document.Info.Title = "NextHoliday API";
         document.Info.Description = "Holiday recomendation API.";
+
+        var securitySchemes = new Dictionary<string, IOpenApiSecurityScheme>
+        {
+            ["Bearer"] = new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                In = ParameterLocation.Header,
+                BearerFormat = "Json Web Token"
+            }
+        };
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes = securitySchemes;
+
+        foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations!))
+        {
+            operation.Value.Security ??= [];
+            operation.Value.Security.Add(new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+            });
+        }
+
         return Task.CompletedTask;
     });
 });
