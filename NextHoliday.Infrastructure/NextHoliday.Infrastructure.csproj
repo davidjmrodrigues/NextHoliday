@@ -19,4 +19,10 @@
     <ProjectReference Include="..\NextHoliday.Domain\NextHoliday.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Persistence\countries.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
