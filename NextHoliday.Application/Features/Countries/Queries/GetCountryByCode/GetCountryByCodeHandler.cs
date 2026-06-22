@@ -23,7 +23,7 @@ namespace NextHoliday.Application.Features.Countries.Queries.GetCountryByCode
                 c.Name,
                 c.Continent.ToString(),
                 c.Currency,
-                c.Currency,
+                c.Language,
                 c.Capital,
                 c.RequiresVisa
             ))
