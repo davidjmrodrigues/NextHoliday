@@ -69,6 +69,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.CreatedAtRoute("GetDestinationById", new { id = result.Id }, result);
             })
             .WithName("CreateDestination")
+            .RequireAuthorization()
             .Produces<CreatedDestinationResponse>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
@@ -81,6 +82,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.NoContent();
             })
             .WithName("UpdateDestination")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
@@ -92,6 +94,7 @@ namespace NextHoliday.API.Endpoints
                 return Results.NoContent();
             })
             .WithName("DeleteDestination")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
         }

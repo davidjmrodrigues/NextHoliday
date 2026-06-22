@@ -19,6 +19,7 @@ public class ValidationExceptionHandler : IExceptionHandler
 
         switch (exception)
         {
+            // 400 BAD REQUESTS
             case ValidationException validationException:
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 problemDetails.Status = StatusCodes.Status400BadRequest;
@@ -35,6 +36,23 @@ public class ValidationExceptionHandler : IExceptionHandler
                 problemDetails.Extensions.Add("errors", errors);
                 break;
 
+            case UserDataAlreadyExistsException:
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Invalid registration.";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            // 401 NOT AUTHORIZED
+            case InvalidCredentialsException:
+                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                problemDetails.Status = StatusCodes.Status401Unauthorized;
+                problemDetails.Title = "Non Authorized.";
+                problemDetails.Detail = exception.Message;
+                break;
+
+
+            // 404 NOT FOUND
             case KeyNotFoundException keyNotFoundException:
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 problemDetails.Status = StatusCodes.Status404NotFound;
@@ -53,7 +71,7 @@ public class ValidationExceptionHandler : IExceptionHandler
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 problemDetails.Status = StatusCodes.Status500InternalServerError;
                 problemDetails.Title = "Internal server error.";
-                problemDetails.Detail = "An unexpected server error occurred. Please try again later.";
+                problemDetails.Detail = exception.Message;
                 break;
         }
 
