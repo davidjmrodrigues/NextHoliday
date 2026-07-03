@@ -77,6 +77,7 @@ namespace NextHoliday.Infrastructure.Persistence
             });
 
             PopulateCountries(modelBuilder);
+            PopulateDestinations(modelBuilder);
         }
 
         private void PopulateCountries(ModelBuilder modelBuilder)
@@ -93,6 +94,21 @@ namespace NextHoliday.Infrastructure.Persistence
                     modelBuilder.Entity<Country>().HasData(countries);
 
             } else Console.WriteLine("Failed to populate countries: countries.json file not found.");
+        }
+        private void PopulateDestinations(ModelBuilder modelBuilder)
+        {
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var filePath = Path.Combine(assemblyPath!, "Persistence", "destinations.json");
+
+            if (File.Exists(filePath))
+            {
+                var jsonString = File.ReadAllText(filePath);
+                var destinations = JsonSerializer.Deserialize<List<Destination>>(jsonString);
+
+                if (destinations != null)
+                    modelBuilder.Entity<Destination>().HasData(destinations);
+
+            } else Console.WriteLine("Failed to populate destinations: destinations.json file not found.");
         }
     }
 }
