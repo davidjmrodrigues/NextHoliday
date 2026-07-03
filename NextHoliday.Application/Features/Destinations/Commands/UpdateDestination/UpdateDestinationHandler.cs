@@ -24,6 +24,8 @@ namespace NextHoliday.Application.Features.Destinations.Commands.UpdateDestinati
             destination.City = request.City;
             destination.Description = request.Description;
             destination.CountryCode = request.CountryCode;
+            destination.Latitude = request.Latitude;
+            destination.Longitude = request.Longitude;
             destination.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(cancellationToken);

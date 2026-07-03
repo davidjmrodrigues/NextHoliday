@@ -34,6 +34,8 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
                 destination.City,
                 destination.Description,
                 destination.CountryCode,
+                destination.Latitude,
+                destination.Longitude,
                 destination.IsActive
             );
         }
