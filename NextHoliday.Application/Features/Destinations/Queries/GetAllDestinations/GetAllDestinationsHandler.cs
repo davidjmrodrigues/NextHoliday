@@ -39,6 +39,8 @@ public class GetAllDestinationsHandler : IRequestHandler<GetAllDestinationsQuery
                 d.Country.Code,
                 d.Country.Name,
                 d.Description,
+                d.Latitude,
+                d.Longitude,
                 d.IsActive
             ))
             .ToListAsync(cancellationToken);

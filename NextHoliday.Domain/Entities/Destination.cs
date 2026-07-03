@@ -8,6 +8,9 @@ namespace NextHoliday.Domain.Entities
         public string City { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
 
         // Foreign Keys
         public string CountryCode { get; set; } = string.Empty;

@@ -22,6 +22,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationby
                     d.Country.Code,
                     d.Country.Name,
                     d.Description,
+                    d.Latitude,
+                    d.Longitude,
                     d.IsActive,
                     d.ClimateHistories.Select(ch => new ClimateHistoryDto(ch.Month, ch.AverageTemperature, ch.RainProbability, ch.WeatherCondition)),
                     d.PriceHistories.Select(ph => new PriceHistoryDto(ph.Month, ph.EstimatedFlightPrice, ph.EstimatedHotelPricePerNight))

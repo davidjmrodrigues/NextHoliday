@@ -11,6 +11,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestinati
         string CountryCode,
         string CountryName,
         string Description,
+        double Latitude,
+        double Longitude,
         bool IsActive,
         double AverageTemperature,
         double RainProbability,

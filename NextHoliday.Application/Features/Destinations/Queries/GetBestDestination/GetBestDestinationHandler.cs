@@ -38,6 +38,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetBestDestinati
                 bestDestination.Country.Code,
                 bestDestination.Country.Name,
                 bestDestination.Description,
+                bestDestination.Latitude,
+                bestDestination.Longitude,
                 bestDestination.IsActive,
                 climate?.AverageTemperature ?? 0,
                 climate?.RainProbability ?? 0,

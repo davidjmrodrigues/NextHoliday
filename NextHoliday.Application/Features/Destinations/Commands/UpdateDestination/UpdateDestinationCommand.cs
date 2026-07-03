@@ -7,6 +7,8 @@ namespace NextHoliday.Application.Features.Destinations.Commands.UpdateDestinati
         string City,
         string Description,
         string CountryCode,
+        double Latitude,
+        double Longitude,
         bool IsActive
     ) : IRequest<Unit>
     {

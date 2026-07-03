@@ -17,6 +17,14 @@ namespace NextHoliday.Application.Features.Destinations.Commands.UpdateDestinati
             RuleFor(x => x.CountryCode)
                 .NotEmpty()
                 .Length(2);
+
+            RuleFor(x => x.Latitude)
+                .NotEmpty()
+                .NotEqual(0);
+            
+            RuleFor(x => x.Longitude)
+                .NotEmpty()
+                .NotEqual(0);
         }
     }
 }

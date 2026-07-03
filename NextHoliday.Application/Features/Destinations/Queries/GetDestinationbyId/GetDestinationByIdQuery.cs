@@ -11,6 +11,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationby
         string CountryCode,
         string CountryName,
         string Description,
+        double Latitude,
+        double Longitude,
         bool IsActive,
         IEnumerable<ClimateHistoryDto> ClimateHistories,
         IEnumerable<PriceHistoryDto> PriceHistories

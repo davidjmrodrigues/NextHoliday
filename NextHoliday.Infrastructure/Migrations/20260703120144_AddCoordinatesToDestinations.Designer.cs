@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NextHoliday.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using NextHoliday.Infrastructure.Persistence;
 namespace NextHoliday.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260703120144_AddCoordinatesToDestinations")]
+    partial class AddCoordinatesToDestinations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1134,78 +1137,6 @@ namespace NextHoliday.Infrastructure.Migrations
                     b.HasIndex("CountryCode");
 
                     b.ToTable("Destinations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f2b3c4d5-e6f7-4a8b-9c0d-e1f2a3b4c5d6"),
-                            City = "Lisbon",
-                            CountryCode = "PT",
-                            Description = "The stunning capital city of Portugal, known for its historic neighborhoods, iconic yellow trams, and delicious custard tart pastries (Pastéis de Belém).",
-                            IsActive = true,
-                            Latitude = 38.722299999999997,
-                            Longitude = -9.1393000000000004
-                        },
-                        new
-                        {
-                            Id = new Guid("a1b2c3d4-e5f6-4a5b-6c7d-8e9f0a1b2c3d"),
-                            City = "Brasília",
-                            CountryCode = "BR",
-                            Description = "The federal capital of Brazil, famous for its unique modern architecture designed by Oscar Niemeyer and its airplane-shaped urban plan.",
-                            IsActive = true,
-                            Latitude = -15.797499999999999,
-                            Longitude = -47.8919
-                        },
-                        new
-                        {
-                            Id = new Guid("b2c3d4e5-f6a7-4b5c-6d7e-8f9a0b1c2d3e"),
-                            City = "Paris",
-                            CountryCode = "FR",
-                            Description = "The City of Light, world-renowned for its art, gastronomy, culture, and iconic landmarks like the Eiffel Tower and the Louvre Museum.",
-                            IsActive = true,
-                            Latitude = 48.8566,
-                            Longitude = 2.3521999999999998
-                        },
-                        new
-                        {
-                            Id = new Guid("c3d4e5f6-a7b8-4c5d-6e7f-8a9b0c1d2e3f"),
-                            City = "Tokyo",
-                            CountryCode = "JP",
-                            Description = "A bustling metropolis blending futuristic technology with traditional temples, neon-lit streets, and world-class cuisine.",
-                            IsActive = true,
-                            Latitude = 35.676200000000001,
-                            Longitude = 139.65029999999999
-                        },
-                        new
-                        {
-                            Id = new Guid("d4e5f6a7-b8c9-4d5e-6f7a-8b9c0d1e2f3a"),
-                            City = "Washington D.C.",
-                            CountryCode = "US",
-                            Description = "The capital of the United States, home to iconic monuments, world-class museums, and the centers of the three branches of the federal government.",
-                            IsActive = true,
-                            Latitude = 38.907200000000003,
-                            Longitude = -77.036900000000003
-                        },
-                        new
-                        {
-                            Id = new Guid("e5f6a7b8-c9d0-4e5f-b6a7-8c9d0e1f2a3b"),
-                            City = "Canberra",
-                            CountryCode = "AU",
-                            Description = "Australia's capital city, known for its planned layout, vast open spaces, and national cultural institutions.",
-                            IsActive = true,
-                            Latitude = -35.280900000000003,
-                            Longitude = 149.13
-                        },
-                        new
-                        {
-                            Id = new Guid("f6a7b8c9-d0e1-4f5a-b6c7-8d9e0f1a2b3c"),
-                            City = "Cairo",
-                            CountryCode = "EG",
-                            Description = "The vibrant capital of Egypt, situated on the Nile River and famous for the nearby Great Pyramids of Giza and the Sphinx.",
-                            IsActive = true,
-                            Latitude = 30.0444,
-                            Longitude = 31.235700000000001
-                        });
                 });
 
             modelBuilder.Entity("NextHoliday.Domain.Entities.History.ClimateHistory", b =>

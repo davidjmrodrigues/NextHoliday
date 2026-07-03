@@ -14,6 +14,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetAllDestinatio
         string CountryCode,
         string CountryName,
         string Description,
+        double Latitude,
+        double Longitude,
         bool IsActive
     );
 }

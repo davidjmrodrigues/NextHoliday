@@ -6,7 +6,9 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
     (
         string City,
         string Description,
-        string CountryCode
+        string CountryCode,
+        double Latitude,
+        double Longitude
     ) : IRequest<CreatedDestinationResponse>;
 }
 
@@ -14,6 +16,8 @@ public record CreatedDestinationResponse(
     Guid Id, 
     string City, 
     string Description, 
-    string CountryCode, 
+    string CountryCode,
+    double Latitude,
+    double Longitude,
     bool IsActive
 );
