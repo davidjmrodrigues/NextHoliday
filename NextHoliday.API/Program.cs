@@ -9,6 +9,7 @@ using NextHoliday.API.Middleware;
 using NextHoliday.Application;
 using NextHoliday.Application.Common;
 using NextHoliday.Infrastructure.Persistence;
+using NextHoliday.Infrastructure.Services;
 using Scalar.AspNetCore;
 using System.Text;
 
@@ -50,6 +51,16 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+
+
+// HTTP CLIENT FACTORY
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<WeatherSyncService>();
+
+
+// BACKGROUND SERVICES
+builder.Services.AddHostedService<WeatherSyncBackgroundService>();
+
 
 // OPEN API CONFIGURATION
 builder.Services.AddOpenApi(options =>
