@@ -3,10 +3,17 @@
     public class ClimateHistory
     {
         public Guid Id { get; set; }
-        public int Month { get; set; } // 1-12
-        public double AverageTemperature { get; set; } // in Celsius
-        public double RainProbability { get; set; } // Percentage 0-100
-        public string WeatherCondition { get; set; } = string.Empty; // e.g., "Sunny", "Rainy"
+        
+        public DateOnly Date { get; set; } 
+        
+        // in Celsius
+        public double MaxTemperature { get; set; } 
+        public double MinTemperature { get; set; } 
+        
+        public double RainProbability { get; set; } // 0-100
+        public string WeatherCondition { get; set; } = string.Empty; // ex: "Sunny", "Rainy"
+        
+        public int WeatherCode { get; set; } 
 
         // Foreign keys
         public Guid DestinationId { get; set; }

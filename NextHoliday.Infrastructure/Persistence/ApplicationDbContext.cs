@@ -54,7 +54,12 @@ namespace NextHoliday.Infrastructure.Persistence
             modelBuilder.Entity<ClimateHistory>(entity =>
             {
                 entity.HasKey(ch => ch.Id);
+                entity.Property(ch => ch.Date).IsRequired();
                 entity.Property(ch => ch.WeatherCondition).HasMaxLength(50);
+
+                entity.Property(ch => ch.MinTemperature).HasColumnType("float");
+                entity.Property(ch => ch.MaxTemperature).HasColumnType("float");
+                entity.Property(ch => ch.RainProbability).HasColumnType("float");
 
                 // One destination to many climate histories
                 entity.HasOne(ch => ch.Destination)
