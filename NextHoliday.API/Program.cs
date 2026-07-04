@@ -9,6 +9,7 @@ using NextHoliday.API.Middleware;
 using NextHoliday.Application;
 using NextHoliday.Application.Common;
 using NextHoliday.Infrastructure.Persistence;
+using NextHoliday.Infrastructure.Services;
 using Scalar.AspNetCore;
 using System.Text;
 
@@ -50,6 +51,16 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+
+
+// HTTP CLIENT FACTORY
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<WeatherSyncService>();
+
+
+// BACKGROUND SERVICES
+builder.Services.AddHostedService<WeatherSyncBackgroundService>();
+
 
 // OPEN API CONFIGURATION
 builder.Services.AddOpenApi(options =>
@@ -95,6 +106,7 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 9;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -124,6 +136,8 @@ if (app.Environment.IsDevelopment())
             Console.WriteLine($"[DEV] Error while applying migrations: {ex.Message}");
         }
     }
+
+    await AdminSeeder.EnsureUserIsAdminAsync(app.Services, "admin@test.com");
 
     app.MapOpenApi();
     app.MapScalarApiReference();
