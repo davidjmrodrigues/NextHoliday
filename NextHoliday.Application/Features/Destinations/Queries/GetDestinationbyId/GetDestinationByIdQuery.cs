@@ -18,6 +18,6 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationby
         IEnumerable<PriceHistoryDto> PriceHistories
     );
 
-    public record ClimateHistoryDto(int Month, double AverageTemperature, double RainProbability, string WeatherCondition);
+    public record ClimateHistoryDto(DateOnly Date, double MinTemperature, double MaxTemperature, double RainProbability, string WeatherCondition, int WeatherCode);
     public record PriceHistoryDto(int Month, decimal EstimatedFlightPrice, decimal EstimatedHotelPricePerNight);
 }
