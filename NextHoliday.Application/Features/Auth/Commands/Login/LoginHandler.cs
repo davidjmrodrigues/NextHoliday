@@ -34,6 +34,10 @@ namespace NextHoliday.Application.Features.Auth.Commands.Login
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var userRole in userRoles)
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 
             var token = new JwtSecurityToken(

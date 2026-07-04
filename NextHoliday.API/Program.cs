@@ -106,6 +106,7 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 9;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -135,6 +136,8 @@ if (app.Environment.IsDevelopment())
             Console.WriteLine($"[DEV] Error while applying migrations: {ex.Message}");
         }
     }
+
+    await AdminSeeder.EnsureUserIsAdminAsync(app.Services, "admin@test.com");
 
     app.MapOpenApi();
     app.MapScalarApiReference();

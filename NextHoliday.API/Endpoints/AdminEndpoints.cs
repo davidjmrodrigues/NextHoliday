@@ -6,7 +6,8 @@ namespace NextHoliday.API.Endpoints
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("admin");
+            var group = app.MapGroup("admin")
+                .RequireAuthorization(policy => policy.RequireRole("Admin"));
 
             // WEATHER
             var weatherGroup = group.MapGroup("weather");
