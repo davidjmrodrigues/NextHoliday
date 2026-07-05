@@ -80,10 +80,10 @@ namespace NextHoliday.Infrastructure.Services.Weather
             [JsonPropertyName("time")]
             public List<string> Time { get; set; } = null!;
 
-            [JsonPropertyName("temperature_2m_max_EC_Earth3P_HR")]
+            [JsonPropertyName("temperature_2m_max")]
             public List<double?> MaxTempModel { get; set; } = null!;
 
-            [JsonPropertyName("temperature_2m_min_EC_Earth3P_HR")]
+            [JsonPropertyName("temperature_2m_min")]
             public List<double?> MinTempModel { get; set; } = null!;
         }
     }
