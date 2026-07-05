@@ -9,7 +9,7 @@ namespace NextHoliday.Infrastructure.Services.Weather
     {
         private readonly HttpClient _httpClient = httpClient;
 
-        public async Task PopuplateHistoricalClimateAsync(Destination destination)
+        public async Task PopulateHistoricalClimateAsync(Destination destination)
         {
             var url = string.Format(
                 CultureInfo.InvariantCulture,
