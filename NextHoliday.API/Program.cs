@@ -53,9 +53,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 
-// HTTP CLIENT FACTORY
+// HTTP CLIENT SERVICES
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<WeatherSyncService>();
+builder.Services.AddScoped<ClimateService>();
 
 
 // BACKGROUND SERVICES
