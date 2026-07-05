@@ -9,7 +9,7 @@ using NextHoliday.API.Middleware;
 using NextHoliday.Application;
 using NextHoliday.Application.Common;
 using NextHoliday.Infrastructure.Persistence;
-using NextHoliday.Infrastructure.Services;
+using NextHoliday.Infrastructure.Services.Weather;
 using Scalar.AspNetCore;
 using System.Text;
 

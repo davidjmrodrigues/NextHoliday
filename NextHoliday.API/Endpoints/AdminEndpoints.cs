@@ -1,4 +1,4 @@
-﻿using NextHoliday.Infrastructure.Services;
+﻿using NextHoliday.Infrastructure.Services.Weather;
 
 namespace NextHoliday.API.Endpoints
 {

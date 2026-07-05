@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
-namespace NextHoliday.Infrastructure.Services
+namespace NextHoliday.Infrastructure.Services.Weather
 {
     public class WeatherSyncService(ApplicationDbContext context, HttpClient httpClient)
     {
