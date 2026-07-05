@@ -1,4 +1,6 @@
-﻿using NextHoliday.Infrastructure.Services.Weather;
+﻿using MediatR;
+using NextHoliday.Application.Features.Admin.Commands.SyncHistoricalClimate;
+using NextHoliday.Infrastructure.Services.Weather;
 
 namespace NextHoliday.API.Endpoints
 {
@@ -21,6 +23,21 @@ namespace NextHoliday.API.Endpoints
                 return Results.Ok();
             })
             .WithName("ForceWeatherSync");
+
+
+            // DESTINATIONS
+            var destinationsGroup = group.MapGroup("destinations");
+            destinationsGroup.MapPost("sync-historical-climate", async (IMediator mediator, CancellationToken cancellationToken) =>
+            {
+                Console.WriteLine("[Manual Sync] Historical climate sync initiaded via API...");
+
+                var response = await mediator.Send(new SyncHistoricalClimateCommand(), cancellationToken);
+
+                Console.WriteLine("[Manual Sync] Historical climate sync terminated with message: " + response.Message);
+
+                return Results.Ok(response);
+            })
+            .WithName("SyncHistoricalClimate");
         }
     }
 }
