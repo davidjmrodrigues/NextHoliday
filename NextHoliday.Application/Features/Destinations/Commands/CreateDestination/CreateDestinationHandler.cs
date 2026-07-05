@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextHoliday.Domain.Entities;
 using NextHoliday.Infrastructure.Persistence;
 using NextHoliday.Infrastructure.Services.Weather;
+using System.Text.Json;
 
 namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestination
 {
@@ -39,7 +40,9 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
                 destination.CountryCode,
                 destination.Latitude,
                 destination.Longitude,
-                destination.IsActive
+                destination.IsActive,
+                JsonSerializer.Serialize(destination.HistoricalMonthlyMinTemps),
+                JsonSerializer.Serialize(destination.HistoricalMonthlyMaxTemps)
             );
         }
     }

@@ -16,6 +16,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetAllDestinatio
         string Description,
         double Latitude,
         double Longitude,
-        bool IsActive
+        bool IsActive,
+        string HistoricalMonthlyMinTemps,
+        string HistoricalMonthlyMaxTemps
     );
 }
