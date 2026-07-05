@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextHoliday.Application.Common.Exceptions;
 using NextHoliday.Infrastructure.Persistence;
+using System.Text.Json;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId
 {
@@ -25,6 +26,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationby
                     d.Latitude,
                     d.Longitude,
                     d.IsActive,
+                    JsonSerializer.Serialize(d.HistoricalMonthlyMinTemps),
+                    JsonSerializer.Serialize(d.HistoricalMonthlyMaxTemps),
                     d.ClimateHistories.Select(ch => new ClimateHistoryDto(ch.Date, ch.MinTemperature, ch.MaxTemperature, ch.RainProbability, ch.WeatherCondition, ch.WeatherCode)),
                     d.PriceHistories.Select(ph => new PriceHistoryDto(ph.Month, ph.EstimatedFlightPrice, ph.EstimatedHotelPricePerNight))
                 )).FirstOrDefaultAsync(cancellationToken);

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
-namespace NextHoliday.Infrastructure.Services
+namespace NextHoliday.Infrastructure.Services.Weather
 {
     public class WeatherSyncService(ApplicationDbContext context, HttpClient httpClient)
     {
@@ -84,7 +84,7 @@ namespace NextHoliday.Infrastructure.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error fetching weather data: {ex.Message}");
+                    Console.WriteLine($"[ERROR] Failed to fetch weather data: {ex.Message}");
                 }
 
                 // Delay between batches to avoid hitting API rate limits

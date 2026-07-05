@@ -19,5 +19,7 @@ public record CreatedDestinationResponse(
     string CountryCode,
     double Latitude,
     double Longitude,
-    bool IsActive
+    bool IsActive,
+    string HistoricalMonthlyMinTemps,
+    string HistoricalMonthlyMaxTemps
 );

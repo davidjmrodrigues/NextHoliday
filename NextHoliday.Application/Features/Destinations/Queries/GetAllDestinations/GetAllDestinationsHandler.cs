@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NextHoliday.Infrastructure.Persistence;
+using System.Text.Json;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetAllDestinations;
 
@@ -41,7 +42,9 @@ public class GetAllDestinationsHandler : IRequestHandler<GetAllDestinationsQuery
                 d.Description,
                 d.Latitude,
                 d.Longitude,
-                d.IsActive
+                d.IsActive,
+                JsonSerializer.Serialize(d.HistoricalMonthlyMinTemps),
+                JsonSerializer.Serialize(d.HistoricalMonthlyMaxTemps)
             ))
             .ToListAsync(cancellationToken);
     }

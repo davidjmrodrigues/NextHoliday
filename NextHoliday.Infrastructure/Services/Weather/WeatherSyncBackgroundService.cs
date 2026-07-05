@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace NextHoliday.Infrastructure.Services
+namespace NextHoliday.Infrastructure.Services.Weather
 {
     public class WeatherSyncBackgroundService(IServiceProvider serviceProvider) : BackgroundService
     {

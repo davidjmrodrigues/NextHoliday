@@ -45,6 +45,17 @@ namespace NextHoliday.Infrastructure.Persistence
                 entity.Property(d => d.Latitude).HasColumnType("float");
                 entity.Property(d => d.Longitude).HasColumnType("float");
 
+                // Store the HistoricalMonthlyMinTemps and HistoricalMonthlyMaxTemps as JSON strings in the db
+                entity.Property(d => d.HistoricalMonthlyMinTemps).HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
+                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
+                );
+
+                entity.Property(d => d.HistoricalMonthlyMaxTemps).HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
+                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
+                );
+
                 // One country to many destinations
                 entity.HasOne(d => d.Country)
                       .WithMany(c => c.Destinations)
