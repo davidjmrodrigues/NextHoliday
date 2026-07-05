@@ -22,6 +22,8 @@ namespace NextHoliday.Application.Features.Destinations.Commands.CreateDestinati
                 City = request.City,
                 Description = request.Description,
                 CountryCode = request.CountryCode.ToUpper(),
+                Latitude = request.Latitude,
+                Longitude = request.Longitude,
                 IsActive = true
             };
 
