@@ -14,6 +14,8 @@ namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationby
         double Latitude,
         double Longitude,
         bool IsActive,
+        string HistoricalMonthlyMinTemps,
+        string HistoricalMonthlyMaxTemps,
         IEnumerable<ClimateHistoryDto> ClimateHistories,
         IEnumerable<PriceHistoryDto> PriceHistories
     );
