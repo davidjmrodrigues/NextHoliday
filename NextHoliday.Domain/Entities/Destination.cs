@@ -11,6 +11,9 @@ namespace NextHoliday.Domain.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public double[] HistoricalMonthlyMinTemps { get; set; } = new double[12];
+        public double[] HistoricalMonthlyMaxTemps { get; set; } = new double[12];
+
 
         // Foreign Keys
         public string CountryCode { get; set; } = string.Empty;
