@@ -10,7 +10,7 @@ namespace NextHoliday.API.Endpoints
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("auth");
+            var group = app.MapGroup("auth").WithTags("Authentication");
 
             group.MapPost("register", async (RegisterCommand command, IMediator mediator) =>
             {
