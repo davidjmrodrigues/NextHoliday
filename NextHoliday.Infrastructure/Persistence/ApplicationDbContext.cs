@@ -43,13 +43,13 @@ namespace NextHoliday.Infrastructure.Persistence
 
                 // Store the HistoricalMonthlyMinTemps and HistoricalMonthlyMaxTemps as JSON strings in the db
                 entity.Property(d => d.HistoricalMonthlyMinTemps).HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
-                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null) ?? new double[12]
                 ).Metadata.SetValueComparer(doubleArrayComparer);
 
                 entity.Property(d => d.HistoricalMonthlyMaxTemps).HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
-                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null) ?? new double[12]
                 ).Metadata.SetValueComparer(doubleArrayComparer);
 
                 // One country to many destinations
