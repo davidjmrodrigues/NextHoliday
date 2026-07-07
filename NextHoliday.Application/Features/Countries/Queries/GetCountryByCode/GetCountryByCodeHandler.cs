@@ -5,15 +5,11 @@ using NextHoliday.Infrastructure.Persistence;
 
 namespace NextHoliday.Application.Features.Countries.Queries.GetCountryByCode
 {
-    public class GetCountryByCodeHandler : IRequestHandler<GetCountryByCodeQuery, CountryByCodeDto?>
+    public class GetCountryByCodeHandler(ApplicationDbContext context) : IRequestHandler<GetCountryByCodeQuery, CountryByCodeDto?>
     {
-        private readonly ApplicationDbContext _context;
-
-        public GetCountryByCodeHandler(ApplicationDbContext context) => _context = context;
-
         public async Task<CountryByCodeDto?> Handle(GetCountryByCodeQuery request, CancellationToken cancellationToken)
         {
-            var query = _context.Countries.AsQueryable();
+            var query = context.Countries.AsQueryable();
 
             if (!request.Code.Equals(""))
                 query = query.Where(c => c.Code == request.Code);

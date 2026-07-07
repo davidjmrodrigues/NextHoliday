@@ -9,22 +9,13 @@ using System.Text;
 
 namespace NextHoliday.Application.Features.Auth.Commands.Login
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, string>
+    public class LoginHandler(UserManager<IdentityUser> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, string>
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _configuration;
-
-        public LoginHandler(UserManager<IdentityUser> userManager, IConfiguration configuration)
-        {
-            _userManager = userManager;
-            _configuration = configuration;
-        }
-
         public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(request.Username);
+            var user = await userManager.FindByNameAsync(request.Username);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+            if (user == null || !await userManager.CheckPasswordAsync(user, request.Password))
                 throw new InvalidCredentialsException();
 
             var authClaims = new List<Claim>
@@ -34,15 +25,15 @@ namespace NextHoliday.Application.Features.Auth.Commands.Login
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRoles = await userManager.GetRolesAsync(user);
             foreach (var userRole in userRoles)
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
 
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
                 expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

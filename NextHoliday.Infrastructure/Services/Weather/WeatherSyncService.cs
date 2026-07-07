@@ -9,15 +9,12 @@ namespace NextHoliday.Infrastructure.Services.Weather
 {
     public class WeatherSyncService(ApplicationDbContext context, HttpClient httpClient)
     {
-        private readonly ApplicationDbContext _context = context;
-        private readonly HttpClient _httpClient = httpClient;
-
         public async Task SyncWeatherForDestinationsAsync()
         {
             const int batchSize = 10; // Number of destinations to get in each HTML request
             var delayBetweenBatches = TimeSpan.FromSeconds(2);
 
-            var destinations = await _context.Destinations.Where(d => d.IsActive).ToListAsync();
+            var destinations = await context.Destinations.Where(d => d.IsActive).ToListAsync();
 
             // Process destinations in batches
             for (int i = 0; i < destinations.Count; i += batchSize)
@@ -35,13 +32,13 @@ namespace NextHoliday.Infrastructure.Services.Weather
 
                     if (batch.Count == 1)
                     {
-                        var response = await _httpClient.GetFromJsonAsync<OpenMeteoResponse>(url);
+                        var response = await httpClient.GetFromJsonAsync<OpenMeteoResponse>(url);
                         if (response != null)
                             apiResults = [response];
                     }
                     else
                     {
-                        apiResults = await _httpClient.GetFromJsonAsync<List<OpenMeteoResponse>>(url);
+                        apiResults = await httpClient.GetFromJsonAsync<List<OpenMeteoResponse>>(url);
                     }
 
                     if (apiResults == null || apiResults.Count != batch.Count) continue;
@@ -55,8 +52,8 @@ namespace NextHoliday.Infrastructure.Services.Weather
                         if (apiResult?.Daily == null) continue;
 
                         // Eliminate old forecasts for the destination before adding new ones
-                        var oldForecasts = _context.ClimateHistories.Where(ch => ch.DestinationId == destination.Id);
-                        _context.ClimateHistories.RemoveRange(oldForecasts);
+                        var oldForecasts = context.ClimateHistories.Where(ch => ch.DestinationId == destination.Id);
+                        context.ClimateHistories.RemoveRange(oldForecasts);
 
                         // Iterate over each 14 days of forecast data
                         for (int k = 0; k < apiResult.Daily.Time.Count; k++)
@@ -76,11 +73,11 @@ namespace NextHoliday.Infrastructure.Services.Weather
                                 RainProbability = apiResult.Daily.PrecipitationProbabilityMax[k]
                             };
 
-                            _context.ClimateHistories.Add(climateHistory);
+                            context.ClimateHistories.Add(climateHistory);
                         }
                     }
 
-                    await _context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {

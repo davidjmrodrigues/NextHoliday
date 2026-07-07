@@ -7,8 +7,6 @@ namespace NextHoliday.Infrastructure.Services.Weather
 {
     public class ClimateService(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient = httpClient;
-
         public async Task PopulateHistoricalClimateAsync(Destination destination)
         {
             var url = string.Format(
@@ -20,7 +18,7 @@ namespace NextHoliday.Infrastructure.Services.Weather
 
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<OpenMeteoResponse>(url);
+                var response = await httpClient.GetFromJsonAsync<OpenMeteoResponse>(url);
 
                 if (response?.Daily == null || response.Daily.Time == null)
                 {
