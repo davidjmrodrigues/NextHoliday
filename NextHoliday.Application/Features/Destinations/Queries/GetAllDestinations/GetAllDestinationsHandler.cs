@@ -36,8 +36,8 @@ public class GetAllDestinationsHandler(ApplicationDbContext context) : IRequestH
                 d.Latitude,
                 d.Longitude,
                 d.IsActive,
-                JsonSerializer.Serialize(d.HistoricalMonthlyMinTemps),
-                JsonSerializer.Serialize(d.HistoricalMonthlyMaxTemps)
+                d.HistoricalMonthlyMinTemps,
+                d.HistoricalMonthlyMaxTemps
             ))
             .ToListAsync(cancellationToken);
     }
