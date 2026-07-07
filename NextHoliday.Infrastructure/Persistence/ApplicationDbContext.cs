@@ -4,18 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NextHoliday.Domain.Entities;
 using NextHoliday.Domain.Entities.History;
-using NextHoliday.Domain.Enums;
 using System.Reflection;
 using System.Text.Json;
 
 namespace NextHoliday.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<IdentityUser>(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Country> Countries => Set<Country>();
         public DbSet<Destination> Destinations => Set<Destination>();
         public DbSet<ClimateHistory> ClimateHistories => Set<ClimateHistory>();

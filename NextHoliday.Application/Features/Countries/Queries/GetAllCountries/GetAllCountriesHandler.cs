@@ -4,20 +4,18 @@ using NextHoliday.Infrastructure.Persistence;
 
 namespace NextHoliday.Application.Features.Countries.Queries.GetAllCountries
 {
-    public class GetAllCountriesHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryGridDto>?>
+    public class GetAllCountriesHandler(ApplicationDbContext context) : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryGridDto>?>
     {
-        private readonly ApplicationDbContext _context;
-
-        public GetAllCountriesHandler(ApplicationDbContext context) => _context = context;
-
         public async Task<IEnumerable<CountryGridDto>?> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken)
         {
-            var query = _context.Countries.AsNoTracking();
+            var query = context.Countries.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
-                var searchLower = request.Search.ToLower();
-                query = query.Where(c => c.Name.ToLower().Contains(searchLower) || c.Code.ToLower().Contains(searchLower));
+                query = query.Where(c => 
+                    c.Name.Contains(request.Search, StringComparison.CurrentCultureIgnoreCase) || 
+                    c.Code.Contains(request.Search, StringComparison.CurrentCultureIgnoreCase)
+                );
             }
 
             if (!string.IsNullOrWhiteSpace(request.Continent))

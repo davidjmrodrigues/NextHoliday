@@ -6,15 +6,11 @@ using System.Text.Json;
 
 namespace NextHoliday.Application.Features.Destinations.Queries.GetDestinationbyId
 {
-    public class GetDestinationByIdHandler : IRequestHandler<GetDestinationByIdQuery, DestinationByIdDto?>
+    public class GetDestinationByIdHandler(ApplicationDbContext context) : IRequestHandler<GetDestinationByIdQuery, DestinationByIdDto?>
     {
-        private readonly ApplicationDbContext _context;
-
-        public GetDestinationByIdHandler(ApplicationDbContext context) => _context = context;
-
         public async Task<DestinationByIdDto?> Handle(GetDestinationByIdQuery request, CancellationToken cancellationToken)
         {
-            var destinations = await _context.Destinations
+            var destinations = await context.Destinations
                 .AsNoTracking()
                 .Where(d => d.Id == request.Id)
                 .Select(d => new DestinationByIdDto(
