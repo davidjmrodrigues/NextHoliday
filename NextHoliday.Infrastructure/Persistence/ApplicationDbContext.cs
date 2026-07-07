@@ -60,7 +60,10 @@ namespace NextHoliday.Infrastructure.Persistence
 
             modelBuilder.Entity<ClimateHistory>(entity =>
             {
-                entity.HasKey(ch => ch.Id);
+                entity.HasKey(ch => ch.Id).IsClustered(false);
+
+                entity.HasIndex(ch => ch.Date).IsClustered(true);
+
                 entity.Property(ch => ch.Date).IsRequired();
                 entity.Property(ch => ch.WeatherCondition).HasMaxLength(50);
 
