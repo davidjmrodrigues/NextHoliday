@@ -68,7 +68,7 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
-        document.Info.Version = "v0.3.1";
+        document.Info.Version = "v0.3.2";
         document.Info.Title = "NextHoliday API";
         document.Info.Description = "Holiday recomendation API.";
 
