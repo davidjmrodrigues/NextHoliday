@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using NextHoliday.Domain.Entities;
 using NextHoliday.Domain.Entities.History;
@@ -44,12 +45,12 @@ namespace NextHoliday.Infrastructure.Persistence
                 entity.Property(d => d.HistoricalMonthlyMinTemps).HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
                     v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
-                );
+                ).Metadata.SetValueComparer(doubleArrayComparer);
 
                 entity.Property(d => d.HistoricalMonthlyMaxTemps).HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null!),
                     v => JsonSerializer.Deserialize<double[]>(v, (JsonSerializerOptions?)null!) ?? new double[12]
-                );
+                ).Metadata.SetValueComparer(doubleArrayComparer);
 
                 // One country to many destinations
                 entity.HasOne(d => d.Country)
@@ -60,7 +61,10 @@ namespace NextHoliday.Infrastructure.Persistence
 
             modelBuilder.Entity<ClimateHistory>(entity =>
             {
-                entity.HasKey(ch => ch.Id);
+                entity.HasKey(ch => ch.Id).IsClustered(false);
+
+                entity.HasIndex(ch => ch.Date).IsClustered(true);
+
                 entity.Property(ch => ch.Date).IsRequired();
                 entity.Property(ch => ch.WeatherCondition).HasMaxLength(50);
 
@@ -161,5 +165,12 @@ namespace NextHoliday.Infrastructure.Persistence
                 Console.WriteLine($"[ADMIN] WARNING: Email '{targetEmail}' not found.");
             }
         }
+
+        // COMPARERS
+        private readonly ValueComparer doubleArrayComparer = new ValueComparer<double[]>(
+            (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2), // Compare arrays for equality
+            c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())), // Combine hash codes for change tracking
+            c => c.ToArray() // Snapshot for change tracking
+        );
     }
 }
